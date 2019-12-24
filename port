@@ -1,0 +1,36 @@
+sudo curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+sudo docker search ubuntu
+sudo which docker
+sudo docker search debian:9
+sudo docker pull debian:9
+sudo docker images 
+sudo docker ps -a
+sudo docker run debian:9
+sudo docker ps -a
+sudo docker run debian:9 bash &
+sudo docker run -it debian:9 bash &
+sudo docker ps -a
+sudo docker ps
+sudo docker exec -it nifty_wescoff bash
+sudo docker ps
+sudo docker ps -a
+
+
+port mapping
+
+sudo docker run --name ss -p 9999:80 -it debian:9 bash &
+sudo docker ps -a
+sudo docker exec -it ss bash
+Do installation in container
+   apt-get update
+  apt-get install apache2
+  ls
+cd  /var/www/html/
+ls
+rm index.html
+apt-get install nano
+nano index.html
+put "hi"
+goto web browser and put ip address with port number 
+  
