@@ -1,0 +1,11 @@
+apt install git
+git init nano dockefile
+git log
+git status
+gid add.
+git commit -m "stat"
+git config user.email "you@example.com"
+git config user.anme "your name"
+git commit -m "stat"
+git log
+nano dockerfile
