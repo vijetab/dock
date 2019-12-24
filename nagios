@@ -1,0 +1,49 @@
+apt install wget unzip zip bash-completion
+apt install apache2 libapache2-mod-php7.0 php7.0
+netstat –tlpn for port 80
+or
+ufw allow 80/tcp
+apt-get install -y iptables-persistent
+iptables -I INPUT -p tcp --destination-port 80 -j ACCEPT
+systemctl iptables-persistent save
+systemctl iptables-persistent reload
+a2enmod rewrite headers cgi
+systemctl restart apache2
+apt install autoconf gcc libc6 make apache2-utils libgd-dev
+wget https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.3.4.tar.gz
+tar xzf nagios-4.3.4.tar.gz
+cd nagios-4.3.4/
+./configure --with-httpd-conf=/etc/apache2/sites-enabled
+make all
+useradd nagios
+usermod -a -G nagios www-data
+make install
+make install-init
+systemctl enable nagios.service
+make install-commandmode
+make install-config
+make install-webconf
+htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin
+systemctl restart apache2
+systemctl start nagios
+go to site http ip /nagios
+now plugins.
+apt install libmcrypt-dev make libssl-dev bc gawk dc build-essential snmp 
+libnet-snmp-perl gettext 
+libldap2-dev smbclient fping 
+default-libmysqlclient-dev
+wget https://github.com/nagios-plugins/nagios-plugins/archive/release-2.2.1.tar.gz
+tar xfz release-2.2.1.tar.gz
+cd nagios-plugins-release-2.2.1/
+./tools/setup
+./configure
+make
+make install
+ls /usr/local/nagios/libexec/
+systemctl restart nagios.service
+systemctl status nagios.service
+add new host
+opening /usr/local/nagios/etc/objects/localhost.cfg
+after the localhost
+define host{ use linux-server host_name router alias  router address  192.168.1.1        }
+systemctl restart nagios
