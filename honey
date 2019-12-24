@@ -1,0 +1,25 @@
+https://github.com/random-robbie/docker-ssh-honey/blob/master/Dockerfile
+FROM debian:9
+RUN apt-get update
+RUN apt-get install git libssh-dev screen gcc musl-dev nano openssl build-essential bash openssh-client openssh-server geoip-dbg curl netcat-openbsd clang libjson-c-dev -y
+RUN git clone https://github.com/droberson/ssh-honeypot.git
+WORKDIR /ssh-honeypot/
+RUN make
+RUN ssh-keygen -t rsa -f ./ssh-honeypot.rsa
+RUN chmod 777 /ssh-honeypot/bin/ssh-honeypot
+RUN mv /ssh-honeypot/bin/ssh-honeypot /bin/ssh-honeypot
+EXPOSE 22
+ADD entrypoint.sh /entrypoint.sh
+RUN chmod 777 /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
+create entrypoint.sh
+#!/bin/bash
+ssh-honeypot -r /ssh-honeypot/ssh-honeypot.rsa -p 22 -u nobody
+echo "SSH Honeypot is Running..."
+exec "$@"
+
+change ssh port no 
+sudo nano /etc/ssh/sshd_config
+to run honeypot 
+sudo docker run -p 22:22 -it ssh
