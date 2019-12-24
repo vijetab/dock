@@ -1,0 +1,71 @@
+nginix server
+
+nano /etc/resolve.conf   -> (8.8.8.8)
+
+sudo curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+
+cd Dockerfile/
+nano Dockerfile
+	FROM debian:9
+	RUN apt-get update
+	RUN apt-get install apache2 -y
+	CMD ["apache2ctl","-D","FOREGROUND"]
+
+sudo docker build -t webserver .
+sudo docker images
+cd
+mkdir webserver1
+mkdir webserver2
+
+sudo nano webserver1/index.html
+sudo nano webserver2/index.html
+
+sudo docker run -v /home/shuhari/webserver1:/var/www/html -p 9999:80 -d --name server1 -it webserver
+sudo docker run -v /home/shuhari/webserver2:/var/www/html -p 1111:80 -d --name server3 -it webserver
+
+sudo docker ps
+sudo docker ps -a
+
+sudo apt-get install nginx
+sudo nano /etc/nginx/sites-enabled/default
+server{
+        listen 80;
+        server_name server1.local;
+        location /{
+                proxy_pass http://192.168.197.140:7889;
+        }
+}
+server{
+        listen 80;
+        server_name server3.local;
+        location /{
+                proxy_pass http://192.168.197.140:7891;
+        }
+}
+
+sudo systemctl restart nginx.service
+sudo systemctl status nginx.service
+---------------------------------------------------------------------------------------
+
+
+-----------------------------------------------------------------------------------------------
+
+nginix client
+
+sudo nano /etc/hosts
+
+ping server1.local
+ping server3.local
+
+sudo curl server1.local:7889
+sudo curl server3.local:7891
+
+sudo curl server1.local
+sudo curl server3.local
+
+
+
+
+
+
